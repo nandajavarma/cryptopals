@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python4
 
 base64_encoding = {}
 
@@ -8,27 +8,32 @@ def gen_base64_index():
     base64_encoding = {}
     tokens = input_string.split(" ")
     while tokens:
-        val = tokens.pop(0)
         key = tokens.pop(0)
+        val = tokens.pop(0)
         base64_encoding[key] = val
 
 def hex_to_bin(char):
-    return bin(int(char, 16))[2:].zfill(8)
+    return bin(int(char, 16))[2:].zfill(4)
+
+def binary_list_to_base64list(bitsbin):
+    base64_string = ""
+    while bitsbin:
+       sixbits = int(bitsbin[0:6], 2)
+       bitsbin =  bitsbin[6:]
+       base64_6bits = base64_encoding.get(str(sixbits))
+       base64_string = base64_string + base64_6bits
+    return base64_string
 
 def gen_binary_list(hexstring):
     bitsbin = ""
     binbitslist = []
     for index, i in enumerate(hexstring):
         binval = hex_to_bin(i)
-        if index % 3 == 0:
-            binbitslist.append(bitsbin)
-            bitsbin = binval
-        else:
-            bitsbin = bitsbin.ljust(8) + binval
-    return list(filter(None, binbitslist))
+        bitsbin = bitsbin.ljust(4) + binval
+    return bitsbin.strip(" ")
 
 if __name__=="__main__":
     gen_base64_index()
     hexstring = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
-    binary_list = gen_binary_list(hexstring)
-    print(binary_list)
+    bitsbin = gen_binary_list(hexstring)
+    print(binary_list_to_base64list(bitsbin))
