@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from utils import hex_string_to_binary_string
 
 base64_encoding = {}
 
@@ -12,9 +13,6 @@ def gen_base64_index():
         val = tokens.pop(0)
         base64_encoding[key] = val
 
-def hex_to_bin(char):
-    return bin(int(char, 16))[2:].zfill(4)
-
 def binary_list_to_base64_string(bit_string):
     base64_string = ""
     while bit_string:
@@ -26,17 +24,11 @@ def binary_list_to_base64_string(bit_string):
            base64_string = base64_string + base64_encoded_char
     return base64_string
 
-def hex_string_to_binary_list(hexstring):
-    binary_string = ""
-    for char in hexstring:
-        binary_val = hex_to_bin(char)
-        binary_string = binary_string + binary_val
-    return binary_string.strip(" ")
 
 if __name__=="__main__":
     gen_base64_index()
     hexstring = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
-    binary_string = hex_string_to_binary_list(hexstring)
+    binary_string = hex_string_to_binary_string(hexstring)
     base64_encoded_string = binary_list_to_base64_string(binary_string)
     print(base64_encoded_string)
     assert base64_encoded_string == "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
